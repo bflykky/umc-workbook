@@ -1,8 +1,9 @@
-package com.umc.week6.domain;
+package com.umc.week6.domain.member.entity;
 
-import com.umc.week6.domain.enums.Gender;
-import com.umc.week6.domain.mapping.PreferredFood;
-import com.umc.week6.domain.mapping.TryingMission;
+import com.umc.week6.global.entity.BaseEntity;
+import com.umc.week6.domain.review.entity.Review;
+import com.umc.week6.domain.food.entity.PreferredFood;
+import com.umc.week6.domain.mission.entity.TryingMission;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

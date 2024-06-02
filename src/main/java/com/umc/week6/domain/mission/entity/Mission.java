@@ -1,5 +1,7 @@
-package com.umc.week6.domain;
+package com.umc.week6.domain.mission.entity;
 
+import com.umc.week6.global.entity.BaseEntity;
+import com.umc.week6.domain.store.entity.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -8,8 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,28 +19,25 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @SQLRestriction("deleted_at is NULL")
-public class Review extends BaseEntity {
+public class Mission extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "review_id")
+    @Column(name = "mission_id")
     private Long id;
 
-    // 1 ~ 5점
-    @Column(nullable = false)
-    private int stars;
-
-    // Text 타입
+    @Column(columnDefinition = "TEXT")
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @Column(name = "target_price", nullable = false)
+    private int targetPrice;
+
+    @Column(nullable = false)
+    private int reward;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
+    @JoinColumn(name = "store_id", nullable = false)
     private Store store;
-
 }

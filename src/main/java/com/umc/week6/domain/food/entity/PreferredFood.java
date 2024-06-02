@@ -1,12 +1,15 @@
-package com.umc.week6.domain;
+package com.umc.week6.domain.food.entity;
 
-
+import com.umc.week6.global.entity.BaseEntity;
+import com.umc.week6.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,18 +19,21 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @SQLRestriction("deleted_at is NULL")
-public class Store extends BaseEntity {
+public class PreferredFood extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
     private Long id;
 
-    // varchar(255) 타입
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "member_id")
+    private Member member;
 
-    // 이후 테이블 확장하면서 지역 엔티티 클래스와 연결하기
-    private String region;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "food_id")
+    private Member food;
+
 }

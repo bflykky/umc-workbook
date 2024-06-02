@@ -1,8 +1,7 @@
-package com.umc.week6.domain.mapping;
+package com.umc.week6.domain.mission.entity;
 
-import com.umc.week6.domain.BaseEntity;
-import com.umc.week6.domain.Member;
-import com.umc.week6.domain.Mission;
+import com.umc.week6.global.entity.BaseEntity;
+import com.umc.week6.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

@@ -1,5 +1,8 @@
-package com.umc.week6.domain;
+package com.umc.week6.domain.review.entity;
 
+import com.umc.week6.global.entity.BaseEntity;
+import com.umc.week6.domain.store.entity.Store;
+import com.umc.week6.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,16 +23,26 @@ import org.hibernate.annotations.SQLRestriction;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class ReviewImage {
+@SQLRestriction("deleted_at is NULL")
+public class Review extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "review_image_id")
+    @Column(name = "review_id")
     private Long id;
 
-    // 리뷰 이미지 파일 URL
-    private String image;
+    // 1 ~ 5점
+    @Column(nullable = false)
+    private int stars;
+
+    // Text 타입
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "review_id")
-    private Review review;
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
+    private Store store;
+
 }

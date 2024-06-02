@@ -1,4 +1,4 @@
-package com.umc.week6.domain;
+package com.umc.week6.global.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
