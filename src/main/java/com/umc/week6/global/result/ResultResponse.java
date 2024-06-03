@@ -1,7 +1,6 @@
 package com.umc.week6.global.result;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 public class ResultResponse<T> {
