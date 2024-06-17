@@ -2,6 +2,11 @@ package com.umc.week6.domain.mission.controller;
 
 import com.umc.week6.domain.mission.dto.MissionRequest.RegisterMissionRequest;
 import com.umc.week6.domain.mission.dto.MissionResponse.MissionId;
+import com.umc.week6.domain.mission.dto.TryingMissionRequest;
+import com.umc.week6.domain.mission.dto.TryingMissionRequest.TryMissionRequest;
+import com.umc.week6.domain.mission.dto.TryingMissionResponse;
+import com.umc.week6.domain.mission.dto.TryingMissionResponse.TryingMissionId;
+import com.umc.week6.domain.mission.entity.TryingMission;
 import com.umc.week6.domain.mission.service.MissionService;
 import com.umc.week6.global.error.exception.BusinessException;
 import com.umc.week6.global.result.ResultResponse;
@@ -19,8 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.umc.week6.global.error.code.GlobalErrorCode.TEST_ERROR;
-import static com.umc.week6.global.result.code.MissionResultCode.MISSION_REGISTERED;
-import static com.umc.week6.global.result.code.MissionResultCode.TEST_SUCCESS;
+import static com.umc.week6.global.result.code.MissionResultCode.*;
 
 @RequiredArgsConstructor
 @Tag(name = "미션 API", description = "미션 관련 API입니다.")
@@ -44,5 +48,10 @@ public class MissionController {
     @PostMapping
     public ResultResponse<MissionId> registerMission(@Valid @RequestBody RegisterMissionRequest request) {
         return ResultResponse.of(MISSION_REGISTERED, missionService.registerMission(request));
+    }
+
+    @PostMapping("/try")
+    public ResultResponse<TryingMissionId> tryMission(@Valid @RequestBody TryMissionRequest request) {
+        return ResultResponse.of(TRY_MISSION, missionService.tryMission(request));
     }
 }
