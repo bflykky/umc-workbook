@@ -1,5 +1,7 @@
 package com.umc.week6.domain.mission.controller;
 
+import com.umc.week6.domain.mission.dto.MissionRequest.RegisterMissionRequest;
+import com.umc.week6.domain.mission.dto.MissionResponse.MissionId;
 import com.umc.week6.domain.mission.service.MissionService;
 import com.umc.week6.global.error.exception.BusinessException;
 import com.umc.week6.global.result.ResultResponse;
@@ -7,13 +9,17 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.umc.week6.global.error.code.GlobalErrorCode.TEST_ERROR;
+import static com.umc.week6.global.result.code.MissionResultCode.MISSION_REGISTERED;
 import static com.umc.week6.global.result.code.MissionResultCode.TEST_SUCCESS;
 
 @RequiredArgsConstructor
@@ -33,5 +39,10 @@ public class MissionController {
             throw new BusinessException(TEST_ERROR);
         }
         return ResultResponse.of(TEST_SUCCESS, 1L);
+    }
+
+    @PostMapping
+    public ResultResponse<MissionId> registerMission(@Valid @RequestBody RegisterMissionRequest request) {
+        return ResultResponse.of(MISSION_REGISTERED, missionService.registerMission(request));
     }
 }
