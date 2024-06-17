@@ -7,12 +7,13 @@ spring:
 
   sql:
     init:
-      mode: never
+      mode: ALWAYS
+      data-locations: classpath:/data.sql
+
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
-
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect

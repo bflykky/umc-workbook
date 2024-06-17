@@ -47,12 +47,19 @@ public class Member extends BaseEntity {
     // TEXT 타입
     private String address;
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<PreferredFood> memberPreferList = new ArrayList<>();
+    private List<PreferredFood> preferredFoodList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Review> reviewList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<TryingMission> tryingMissionList = new ArrayList<>();
+
+    public void addPreferredFood(PreferredFood preferredFood) {
+        this.preferredFoodList.add(preferredFood);
+    }
 }

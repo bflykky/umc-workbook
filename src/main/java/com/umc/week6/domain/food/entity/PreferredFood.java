@@ -25,7 +25,7 @@ import org.hibernate.annotations.SQLRestriction;
 public class PreferredFood extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "store_id")
+    @Column(name = "preferred_food_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,6 +34,6 @@ public class PreferredFood extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "food_id")
-    private Member food;
+    private Food food;
 
 }
