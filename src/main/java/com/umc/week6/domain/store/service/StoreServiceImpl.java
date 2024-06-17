@@ -6,9 +6,13 @@ import com.umc.week6.domain.store.dto.StoreRequest.RegisterStoreRequest;
 import com.umc.week6.domain.store.dto.StoreResponse;
 import com.umc.week6.domain.store.entity.Store;
 import com.umc.week6.domain.store.repository.StoreRepository;
+import com.umc.week6.global.error.code.StoreErrorCode;
+import com.umc.week6.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.umc.week6.global.error.code.StoreErrorCode.STORE_NOT_FOUND;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -24,5 +28,11 @@ public class StoreServiceImpl implements StoreService{
         // 나중에는 동일한 가게인지 확인하기 위해 사업자번호나 상호 같은 거도 요청 데이터로 받아야 할 듯
         storeRepository.save(store);
         return storeConverter.toStoreId(store.getId());
+    }
+
+    @Override
+    public Store getStore(Long storeId) {
+        return storeRepository.findById(storeId)
+                .orElseThrow(() -> new BusinessException(STORE_NOT_FOUND));
     }
 }

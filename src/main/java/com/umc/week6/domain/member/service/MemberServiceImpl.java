@@ -11,12 +11,16 @@ import com.umc.week6.domain.member.dto.MemberResponse;
 import com.umc.week6.domain.member.dto.MemberResponse.MemberId;
 import com.umc.week6.domain.member.entity.Member;
 import com.umc.week6.domain.member.repository.MemberRepository;
+import com.umc.week6.global.error.code.MemberErrorCode;
+import com.umc.week6.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.umc.week6.global.error.code.MemberErrorCode.MEMBER_NOT_FOUND;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -43,5 +47,11 @@ public class MemberServiceImpl implements MemberService {
                 .forEach(preferredFood -> member.addPreferredFood(preferredFood));
 
         return memberConverter.toMemberId(member.getId());
+    }
+
+    @Override
+    public Member getMember(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND));
     }
 }
