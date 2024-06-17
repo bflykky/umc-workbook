@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/umc?serverTimezone=Asia/Seoul
+    username: bfly
+    password: 20203085
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  sql:
+    init:
+      mode: ALWAYS
+      data-locations: classpath:/data.sql
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+
+#        hbm2ddl:
+#          auto: update
+
+
+
+        default_batch_fetch_size: 1000

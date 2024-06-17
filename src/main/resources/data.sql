@@ -1,0 +1,12 @@
+INSERT INTO food(food, created_at, updated_at) VALUES('한식', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO food(food, created_at, updated_at) VALUES('일식', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO food(food, created_at, updated_at) VALUES('중식', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO food(food, created_at, updated_at) VALUES('양식', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO food(food, created_at, updated_at) VALUES('치킨', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO food(food, created_at, updated_at) VALUES('분식', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO food(food, created_at, updated_at) VALUES('고기/구이', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO food(food, created_at, updated_at) VALUES('도시락', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO food(food, created_at, updated_at) VALUES('야식', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO food(food, created_at, updated_at) VALUES('패스트푸드', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO food(food, created_at, updated_at) VALUES('디저트', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO food(food, created_at, updated_at) VALUES('아시안푸드', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
