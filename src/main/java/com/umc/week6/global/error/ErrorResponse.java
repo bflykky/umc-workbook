@@ -1,6 +1,8 @@
 package com.umc.week6.global.error;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,18 @@ public class ErrorResponse {
                     .field(fieldError.getField())
                     .message(fieldError.getDefaultMessage())
                     .build();
+        }
+
+        public static ValidationError of(final ConstraintViolation<?> constraintViolation) {
+            return ValidationError.builder()
+                    .field(getFieldName(constraintViolation.getPropertyPath().toString()))
+                    .message(constraintViolation.getMessage())
+                    .build();
+        }
+
+        private static String getFieldName(String path) {
+            String[] dividedPath = path.split("[.]");
+            return dividedPath[dividedPath.length - 1];
         }
     }
 }

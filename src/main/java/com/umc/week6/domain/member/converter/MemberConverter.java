@@ -1,9 +1,8 @@
 package com.umc.week6.domain.member.converter;
 
-import com.umc.week6.domain.member.dto.MemberRequest;
 import com.umc.week6.domain.member.dto.MemberRequest.SignupMemberRequest;
-import com.umc.week6.domain.member.dto.MemberResponse;
 import com.umc.week6.domain.member.dto.MemberResponse.MemberId;
+import com.umc.week6.domain.member.dto.MemberResponse.MemberInfo;
 import com.umc.week6.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,5 +23,12 @@ public class MemberConverter {
 
     public MemberId toMemberId(Long memberId) {
         return new MemberId(memberId);
+    }
+
+    public MemberInfo toMemberInfo(Member member) {
+        return MemberInfo.builder()
+                .memberId(member.getId())
+                .name(member.getName())
+                .build();
     }
 }

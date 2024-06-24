@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ReviewResultCode implements ResultCodeInterface {
     ADD_REVIEW(200, "SR001", "리뷰를 성공적으로 등록하였습니다."),
+    STORE_REVIEW_LIST(200, "SR002", "해당 storeId를 가진 가게의 리뷰 목록을 성공적으로 조회하였습니다."),
 
     ;
 
