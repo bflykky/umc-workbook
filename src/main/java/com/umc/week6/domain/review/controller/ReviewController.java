@@ -2,7 +2,6 @@ package com.umc.week6.domain.review.controller;
 
 import com.umc.week6.domain.review.controller.validation.CheckPage;
 import com.umc.week6.domain.review.dto.ReviewRequest.AddReviewRequest;
-import com.umc.week6.domain.review.dto.ReviewResponse;
 import com.umc.week6.domain.review.dto.ReviewResponse.PagedReviewInfo;
 import com.umc.week6.domain.review.dto.ReviewResponse.ReviewId;
 import com.umc.week6.domain.review.service.ReviewService;
@@ -12,6 +11,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,5 +47,16 @@ public class ReviewController {
     public ResultResponse<PagedReviewInfo> findReviewListByStoreId(@RequestParam("storeId") Long storeId,
                                                                    @CheckPage @RequestParam("page") Integer page) {
         return ResultResponse.of(STORE_REVIEW_LIST, reviewService.findReviewListByStoreId(storeId, page));
+    }
+
+    @GetMapping("/my")
+    @Parameters(value = {
+            @Parameter(name = "memberId", description = "조회할 작성자의 memberId를 입력해 주세요."),
+            @Parameter(name = "page", description = "page 시작은 0번부터입니다."),
+    })
+    @Operation(summary = "내 리뷰 목록 조회 API", description = "내가 작성한 리뷰 목록을 조회합니다.")
+    public ResultResponse<PagedReviewInfo> findMyReviewList(@NotNull @RequestParam Long memberId,
+                                                            @CheckPage @RequestParam("page") Integer page) {
+        return ResultResponse.of(STORE_REVIEW_LIST, reviewService.findMyReviewList(memberId, page));
     }
 }
