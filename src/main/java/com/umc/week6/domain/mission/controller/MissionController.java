@@ -4,6 +4,8 @@ import com.umc.week6.domain.mission.dto.MissionRequest.RegisterMissionRequest;
 import com.umc.week6.domain.mission.dto.MissionResponse.MissionId;
 import com.umc.week6.domain.mission.dto.MissionResponse.PagedMissionInfo;
 import com.umc.week6.domain.mission.dto.TryingMissionRequest.TryMissionRequest;
+import com.umc.week6.domain.mission.dto.TryingMissionResponse;
+import com.umc.week6.domain.mission.dto.TryingMissionResponse.PagedTryingMissionInfo;
 import com.umc.week6.domain.mission.dto.TryingMissionResponse.TryingMissionId;
 import com.umc.week6.domain.mission.service.MissionService;
 import com.umc.week6.domain.review.controller.validation.CheckPage;
@@ -51,11 +53,6 @@ public class MissionController {
         return ResultResponse.of(MISSION_REGISTERED, missionService.registerMission(request));
     }
 
-    @PostMapping("/try")
-    public ResultResponse<TryingMissionId> tryMission(@Valid @RequestBody TryMissionRequest request) {
-        return ResultResponse.of(TRY_MISSION, missionService.tryMission(request));
-    }
-
     @GetMapping
     @Parameters(value = {
             @Parameter(name = "storeId", description = "미션을 조회할 가게의 storeId를 입력해 주세요."),
@@ -67,7 +64,26 @@ public class MissionController {
         return ResultResponse.of(STORE_MISSION_LIST, missionService.findMissionListByStoreId(storeId, page));
     }
 
+    @PostMapping("/try")
+    public ResultResponse<TryingMissionId> tryMission(@Valid @RequestBody TryMissionRequest request) {
+        return ResultResponse.of(TRY_MISSION, missionService.tryMission(request));
+    }
+
+    @GetMapping("/try/my")
+    @Parameters(value = {
+            @Parameter(name = "memberId", description = "자신의 memberId를 입력해 주세요."),
+            @Parameter(name = "page", description = "page 시작은 0번부터입니다."),
+    })
+    @Operation(summary = "내가 진행 중인 미션 목록 조회 API", description = "내가 진행하고 있는 미션 목록을 조회합니다.")
+    public ResultResponse<PagedTryingMissionInfo> findMyTryingMissionList(@RequestParam("memberId") Long memberId,
+                                                                          @CheckPage @RequestParam("page") Integer page) {
+        return ResultResponse.of(MY_TRYING_MISSION_LIST, missionService.findMyTryingMissionList(memberId, page));
+    }
+
     @PostMapping("/try/{tryingMissionId}")
+    @Parameters(value = {
+            @Parameter(name = "tryingMissionId", description = "진행 완료 처리할 진행 중인 미션의 tryingMissionId를 입력해 주세요.")
+    })
     @Operation(summary = "미션 진행완료 처리 API", description = "tryingMissionId를 이용해 진행 중인 미션을 진행 완료 처리합니다.")
     public ResultResponse<TryingMissionId> completeMission(@NotNull @PathVariable("tryingMissionId") Long tryingMissionId) {
         return ResultResponse.of(COMPLETE_MISSION, missionService.completeMission(tryingMissionId));
