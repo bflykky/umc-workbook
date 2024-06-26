@@ -4,6 +4,8 @@ import com.umc.week6.domain.mission.dto.MissionRequest.RegisterMissionRequest;
 import com.umc.week6.domain.mission.dto.MissionResponse.MissionId;
 import com.umc.week6.domain.mission.dto.MissionResponse.PagedMissionInfo;
 import com.umc.week6.domain.mission.dto.TryingMissionRequest.TryMissionRequest;
+import com.umc.week6.domain.mission.dto.TryingMissionResponse;
+import com.umc.week6.domain.mission.dto.TryingMissionResponse.PagedTryingMissionInfo;
 import com.umc.week6.domain.mission.dto.TryingMissionResponse.TryingMissionId;
 import com.umc.week6.domain.mission.entity.Mission;
 
@@ -13,4 +15,5 @@ public interface MissionService {
     TryingMissionId tryMission(TryMissionRequest request);
     PagedMissionInfo findMissionListByStoreId(Long storeId, Integer page);
     TryingMissionId completeMission(Long tryingMissionId);
+    PagedTryingMissionInfo findMyTryingMissionList(Long memberId, Integer page);
 }

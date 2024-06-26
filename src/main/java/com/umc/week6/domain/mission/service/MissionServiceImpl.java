@@ -8,6 +8,7 @@ import com.umc.week6.domain.mission.dto.MissionRequest.RegisterMissionRequest;
 import com.umc.week6.domain.mission.dto.MissionResponse.MissionId;
 import com.umc.week6.domain.mission.dto.MissionResponse.PagedMissionInfo;
 import com.umc.week6.domain.mission.dto.TryingMissionRequest.TryMissionRequest;
+import com.umc.week6.domain.mission.dto.TryingMissionResponse.PagedTryingMissionInfo;
 import com.umc.week6.domain.mission.dto.TryingMissionResponse.TryingMissionId;
 import com.umc.week6.domain.mission.entity.Mission;
 import com.umc.week6.domain.mission.entity.TryingMission;
@@ -78,6 +79,16 @@ public class MissionServiceImpl implements MissionService {
 
         tryingMission.setSucceeded();
         return tryingMissionConverter.toTryingMissionId(tryingMission.getId());
+    }
+
+    @Override
+    public PagedTryingMissionInfo findMyTryingMissionList(Long memberId, Integer page) {
+        Member member = memberService.getMember(memberId);
+
+        Page<TryingMission> tryingMissionList = tryingMissionRepository.findByMemberIdAndIsSucceededIsFalse(memberId,
+                PageRequest.of(page, 10, Sort.Direction.DESC, "createdAt"));
+
+        return tryingMissionConverter.toPagedTryingMissionId(tryingMissionList);
     }
 
     @Override
