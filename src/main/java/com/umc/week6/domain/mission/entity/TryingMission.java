@@ -43,4 +43,8 @@ public class TryingMission extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private Mission mission;
+
+    public void setSucceeded() {
+        this.isSucceeded = true;
+    }
 }

@@ -8,7 +8,7 @@ import com.umc.week6.domain.mission.dto.MissionRequest.RegisterMissionRequest;
 import com.umc.week6.domain.mission.dto.MissionResponse.MissionId;
 import com.umc.week6.domain.mission.dto.MissionResponse.PagedMissionInfo;
 import com.umc.week6.domain.mission.dto.TryingMissionRequest.TryMissionRequest;
-import com.umc.week6.domain.mission.dto.TryingMissionResponse;
+import com.umc.week6.domain.mission.dto.TryingMissionResponse.TryingMissionId;
 import com.umc.week6.domain.mission.entity.Mission;
 import com.umc.week6.domain.mission.entity.TryingMission;
 import com.umc.week6.domain.mission.repository.MissionRepository;
@@ -51,7 +51,7 @@ public class MissionServiceImpl implements MissionService {
 
     @Transactional
     @Override
-    public TryingMissionResponse.TryingMissionId tryMission(TryMissionRequest request) {
+    public TryingMissionId tryMission(TryMissionRequest request) {
         Member member = memberService.getMember(request.getMemberId());
         Mission mission = getMission(request.getMissionId());
         LocalDate dueDate = LocalDate.now().plusDays(7);
@@ -68,6 +68,16 @@ public class MissionServiceImpl implements MissionService {
         Page<Mission> missionList = missionRepository.findByStoreId(store.getId(),
                 PageRequest.of(page, 10, Sort.Direction.DESC, "createdAt"));
         return missionConverter.toPagedMissionInfo(missionList);
+    }
+
+    @Transactional
+    @Override
+    public TryingMissionId completeMission(Long tryingMissionId) {
+        TryingMission tryingMission = tryingMissionRepository.findById(tryingMissionId)
+                .orElseThrow(() -> new BusinessException(MISSION_NOT_FOUND));
+
+        tryingMission.setSucceeded();
+        return tryingMissionConverter.toTryingMissionId(tryingMission.getId());
     }
 
     @Override
