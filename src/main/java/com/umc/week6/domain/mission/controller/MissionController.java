@@ -2,12 +2,11 @@ package com.umc.week6.domain.mission.controller;
 
 import com.umc.week6.domain.mission.dto.MissionRequest.RegisterMissionRequest;
 import com.umc.week6.domain.mission.dto.MissionResponse.MissionId;
-import com.umc.week6.domain.mission.dto.TryingMissionRequest;
+import com.umc.week6.domain.mission.dto.MissionResponse.PagedMissionInfo;
 import com.umc.week6.domain.mission.dto.TryingMissionRequest.TryMissionRequest;
-import com.umc.week6.domain.mission.dto.TryingMissionResponse;
 import com.umc.week6.domain.mission.dto.TryingMissionResponse.TryingMissionId;
-import com.umc.week6.domain.mission.entity.TryingMission;
 import com.umc.week6.domain.mission.service.MissionService;
+import com.umc.week6.domain.review.controller.validation.CheckPage;
 import com.umc.week6.global.error.exception.BusinessException;
 import com.umc.week6.global.result.ResultResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +32,7 @@ import static com.umc.week6.global.result.code.MissionResultCode.*;
 public class MissionController {
     private final MissionService missionService;
 
-    @GetMapping
+    @GetMapping("/test")
     @Operation(summary = "8주차 미션 기록용 테스트 API", description = "응답 API의 통일성 확인 및 예외 핸들러의 동작을 확인하기 위한 API입니다.")
     @Parameters(value = {
             @Parameter(name = "input", description = "0 또는 1을 입력해 주세요. 값에 따라 결과가 달라집니다.")
@@ -53,5 +52,16 @@ public class MissionController {
     @PostMapping("/try")
     public ResultResponse<TryingMissionId> tryMission(@Valid @RequestBody TryMissionRequest request) {
         return ResultResponse.of(TRY_MISSION, missionService.tryMission(request));
+    }
+
+    @GetMapping
+    @Parameters(value = {
+            @Parameter(name = "storeId", description = "미션을 조회할 가게의 storeId를 입력해 주세요."),
+            @Parameter(name = "page", description = "page 시작은 0번부터입니다."),
+    })
+    @Operation(summary = "특정 가게의 미션 목록 조회 API", description = "storeId를 이용해 특정 가게의 미션 목록을 조회합니다.")
+    public ResultResponse<PagedMissionInfo> findReviewListByStoreId(@RequestParam("storeId") Long storeId,
+                                                                    @CheckPage @RequestParam("page") Integer page) {
+        return ResultResponse.of(STORE_MISSION_LIST, missionService.findMissionListByStoreId(storeId, page));
     }
 }
