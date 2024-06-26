@@ -1,8 +1,6 @@
 package com.umc.week6.domain.review.dto;
 
-import com.umc.week6.domain.member.dto.MemberResponse;
 import com.umc.week6.domain.member.dto.MemberResponse.MemberInfo;
-import com.umc.week6.domain.store.dto.StoreResponse;
 import com.umc.week6.domain.store.dto.StoreResponse.StoreInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

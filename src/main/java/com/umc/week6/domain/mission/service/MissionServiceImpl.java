@@ -6,7 +6,7 @@ import com.umc.week6.domain.mission.converter.MissionConverter;
 import com.umc.week6.domain.mission.converter.TryingMissionConverter;
 import com.umc.week6.domain.mission.dto.MissionRequest.RegisterMissionRequest;
 import com.umc.week6.domain.mission.dto.MissionResponse.MissionId;
-import com.umc.week6.domain.mission.dto.TryingMissionRequest;
+import com.umc.week6.domain.mission.dto.MissionResponse.PagedMissionInfo;
 import com.umc.week6.domain.mission.dto.TryingMissionRequest.TryMissionRequest;
 import com.umc.week6.domain.mission.dto.TryingMissionResponse;
 import com.umc.week6.domain.mission.entity.Mission;
@@ -17,6 +17,9 @@ import com.umc.week6.domain.store.entity.Store;
 import com.umc.week6.domain.store.service.StoreService;
 import com.umc.week6.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,6 +59,15 @@ public class MissionServiceImpl implements MissionService {
         TryingMission tryingMission = tryingMissionConverter.toEntity(member, mission, dueDate);
         tryingMissionRepository.save(tryingMission);
         return tryingMissionConverter.toTryingMissionId(tryingMission.getId());
+    }
+
+    @Override
+    public PagedMissionInfo findMissionListByStoreId(Long storeId, Integer page) {
+        Store store = storeService.getStore(storeId);
+
+        Page<Mission> missionList = missionRepository.findByStoreId(store.getId(),
+                PageRequest.of(page, 10, Sort.Direction.DESC, "createdAt"));
+        return missionConverter.toPagedMissionInfo(missionList);
     }
 
     @Override
