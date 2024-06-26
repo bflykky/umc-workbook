@@ -12,4 +12,5 @@ public interface MissionService {
     Mission getMission(Long missionId);
     TryingMissionId tryMission(TryMissionRequest request);
     PagedMissionInfo findMissionListByStoreId(Long storeId, Integer page);
+    TryingMissionId completeMission(Long tryingMissionId);
 }

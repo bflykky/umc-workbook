@@ -14,8 +14,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,5 +65,11 @@ public class MissionController {
     public ResultResponse<PagedMissionInfo> findReviewListByStoreId(@RequestParam("storeId") Long storeId,
                                                                     @CheckPage @RequestParam("page") Integer page) {
         return ResultResponse.of(STORE_MISSION_LIST, missionService.findMissionListByStoreId(storeId, page));
+    }
+
+    @PostMapping("/try/{tryingMissionId}")
+    @Operation(summary = "미션 진행완료 처리 API", description = "tryingMissionId를 이용해 진행 중인 미션을 진행 완료 처리합니다.")
+    public ResultResponse<TryingMissionId> completeMission(@NotNull @PathVariable("tryingMissionId") Long tryingMissionId) {
+        return ResultResponse.of(COMPLETE_MISSION, missionService.completeMission(tryingMissionId));
     }
 }
