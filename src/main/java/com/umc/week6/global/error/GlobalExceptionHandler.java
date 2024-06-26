@@ -1,7 +1,9 @@
 package com.umc.week6.global.error;
 
+import com.umc.week6.global.error.ErrorResponse.ValidationError;
 import com.umc.week6.global.error.code.GlobalErrorCode;
 import com.umc.week6.global.error.exception.BusinessException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -31,6 +33,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleIllegalArgument(IllegalArgumentException e) {
         ErrorCode errorCode = GlobalErrorCode.INVALID_PARAMETER;
         return handleExceptionInternal(errorCode, e.getMessage());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException e) {
+        ErrorCode errorCode = GlobalErrorCode.INVALID_PARAMETER;
+        return handleExceptionInternal(e, errorCode);
     }
 
     @Override
@@ -74,19 +82,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(makeErrorResponse(e, errorCode));
     }
 
-    private Object makeErrorResponse(BindException e, ErrorCode errorCode) {
-        final List<ErrorResponse.ValidationError> validationErrorList = e.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(fieldError -> ErrorResponse.ValidationError.of(fieldError))
-                .collect(Collectors.toList());
-
-        return ErrorResponse.builder()
-                .httpStatus(errorCode.getHttpStatus())
-                .code(errorCode.getCode())
-                .message(errorCode.getMessage())
-                .errors(validationErrorList)
-                .build();
+    private ResponseEntity<Object> handleExceptionInternal(ConstraintViolationException e, ErrorCode errorCode) {
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(makeErrorResponse(e, errorCode));
     }
 
     @Override
@@ -100,6 +99,35 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+    private Object makeErrorResponse(BindException e, ErrorCode errorCode) {
+        final List<ValidationError> validationErrorList = e.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(fieldError -> ValidationError.of(fieldError))
+                .collect(Collectors.toList());
+
+        return ErrorResponse.builder()
+                .httpStatus(errorCode.getHttpStatus())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .errors(validationErrorList)
+                .build();
+    }
+
+    private Object makeErrorResponse(ConstraintViolationException e, ErrorCode errorCode) {
+        final List<ValidationError> validationErrorList = e.getConstraintViolations()
+                .stream()
+                .map(constraintViolation -> ValidationError.of(constraintViolation))
+                .toList();
+
+        return ErrorResponse.builder()
+                .httpStatus(errorCode.getHttpStatus())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .errors(validationErrorList)
+                .build();
+    }
+
     private Object makeErrorResponse(ErrorCode errorCode, HttpStatus httpStatus, String message) {
         return ErrorResponse.builder()
                 .httpStatus(httpStatus)
@@ -107,4 +135,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .message(message)
                 .build();
     }
+
 }

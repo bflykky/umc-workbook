@@ -11,6 +11,8 @@ import com.umc.week6.domain.review.repository.ReviewRepository;
 import com.umc.week6.domain.store.entity.Store;
 import com.umc.week6.domain.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,5 +34,14 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = reviewConverter.toEntity(request, member, store);
         reviewRepository.save(review);
         return reviewConverter.toReviewId(review.getId());
+    }
+
+    @Override
+    public ReviewResponse.PagedReviewInfo findReviewListByStoreId(Long storeId, Integer page) {
+        // 해당 storeId를 가진 Store가 존재하는지 검증
+        storeService.getStore(storeId);
+
+        Page<Review> reviewList = reviewRepository.findByStoreId(storeId, PageRequest.of(page, 10));
+        return reviewConverter.toPagedReviewInfo(reviewList);
     }
 }

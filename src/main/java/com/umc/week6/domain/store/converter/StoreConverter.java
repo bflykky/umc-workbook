@@ -2,7 +2,9 @@ package com.umc.week6.domain.store.converter;
 
 import com.umc.week6.domain.store.dto.StoreRequest;
 import com.umc.week6.domain.store.dto.StoreRequest.RegisterStoreRequest;
+import com.umc.week6.domain.store.dto.StoreResponse;
 import com.umc.week6.domain.store.dto.StoreResponse.StoreId;
+import com.umc.week6.domain.store.dto.StoreResponse.StoreInfo;
 import com.umc.week6.domain.store.entity.Store;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,13 @@ public class StoreConverter {
     public StoreId toStoreId(Long storeId) {
         return StoreId.builder()
                 .storeId(storeId)
+                .build();
+    }
+
+    public StoreInfo toStoreInfo(Store store) {
+        return StoreInfo.builder()
+                .storeId(store.getId())
+                .name(store.getName())
                 .build();
     }
 }

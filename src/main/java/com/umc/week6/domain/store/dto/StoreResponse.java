@@ -14,4 +14,13 @@ public abstract class StoreResponse {
     public static class StoreId {
         private Long storeId;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class StoreInfo {
+        private Long storeId;
+        private String name;
+    }
 }
